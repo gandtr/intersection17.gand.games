@@ -1,0 +1,329 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>INTERSECTION 17 — a traffic-post bureaucracy game · Gand Games</title>
+<meta name="description" content="You are the marshal of Intersection 17. Direct the traffic, salute the pennants, feed the family, mind the curfew. Thirty days. One permanent record. Coming soon from Gand Games.">
+<link rel="canonical" href="https://intersection17.gand.games/">
+<meta name="theme-color" content="#26262a">
+<meta property="og:type" content="website">
+<meta property="og:title" content="INTERSECTION 17 — a traffic-post bureaucracy game">
+<meta property="og:description" content="Direct the traffic. Salute the pennants. Feed the family. Mind the curfew. Thirty days. One permanent record.">
+<meta property="og:url" content="https://intersection17.gand.games/">
+<meta property="og:image" content="https://intersection17.gand.games/public/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="public/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="public/apple-touch-icon.png">
+<style>
+/* ── Sunward People's Republic of Soryang · document stock ─────────── */
+@font-face{font-family:"Allerta Stencil";src:url(public/fonts/stencil.woff2) format("woff2");font-display:swap}
+@font-face{font-family:"Special Elite";src:url(public/fonts/elite.woff2) format("woff2");font-display:swap}
+@font-face{font-family:"Courier Prime";src:url(public/fonts/courier.woff2) format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"Courier Prime";src:url(public/fonts/courier-bold.woff2) format("woff2");font-weight:700;font-display:swap}
+@font-face{font-family:"Courier Prime";src:url(public/fonts/courier-italic.woff2) format("woff2");font-style:italic;font-display:swap}
+
+:root{
+  --chrome:#26262a; --chrome-edge:#0d0d0f; --paper:#d6cdb4; --paper-hi:#e3dbc4;
+  --shade:#b8ae94; --ink:#2b2822; --ink-dim:#5c5748; --red:#8f2d2c;
+  --approve:#4a5d3a; --khaki:#9a8f6e; --photo:#efe8d5;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  background:var(--chrome);
+  /* archive-desk hatching, ink on chrome */
+  background-image:
+    repeating-linear-gradient(135deg, rgba(13,13,15,.55) 0 1px, transparent 1px 14px),
+    radial-gradient(ellipse 120% 90% at 50% -10%, #2e2e33 0%, #26262a 55%, #1d1d20 100%);
+  color:var(--ink);
+  font-family:"Courier Prime",ui-monospace,monospace;
+  font-size:17px; line-height:1.55;
+  padding:0 14px 90px;
+}
+
+/* grain over everything, incl. the chrome desk */
+body::after{
+  content:""; position:fixed; inset:0; pointer-events:none; z-index:60; opacity:.03;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ── top strip ── */
+.masthead{
+  max-width:820px; margin:0 auto; padding:14px 4px 26px;
+  display:flex; justify-content:space-between; align-items:baseline; gap:12px;
+  color:#8a8478; font-family:"Special Elite",monospace; font-size:13px; letter-spacing:.14em;
+}
+.masthead a{color:#ddd6c2; text-decoration:none; border-bottom:2px solid var(--red); padding-bottom:1px}
+.masthead a:hover,.masthead a:focus-visible{color:#fff; background:var(--red); outline:none}
+.masthead .fileno{color:#8a8478}
+@media (max-width:560px){.masthead{flex-direction:column;gap:4px}}
+
+/* ── documents ── */
+.doc{
+  position:relative; max-width:780px; margin:0 auto 58px;
+  background:var(--paper); border:2px solid var(--chrome-edge);
+  box-shadow:8px 10px 0 rgba(13,13,15,.85);
+  padding:44px 48px 46px;
+}
+.doc::before{ /* paper grain */
+  content:""; position:absolute; inset:0; pointer-events:none; opacity:.08; mix-blend-mode:multiply;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='p'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.55' numOctaves='3'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23p)'/%3E%3C/svg%3E");
+}
+.doc:nth-of-type(odd){transform:rotate(.35deg)}
+.doc:nth-of-type(even){transform:rotate(-.3deg)}
+@media (max-width:640px){.doc{padding:30px 20px 34px}}
+
+/* manila file tab */
+.tab{
+  position:absolute; top:-30px; left:26px; z-index:-1;
+  background:var(--shade); border:2px solid var(--chrome-edge); border-bottom:none;
+  font-family:"Special Elite",monospace; font-size:12.5px; letter-spacing:.18em;
+  padding:5px 18px 14px; color:var(--ink);
+}
+.doc:nth-of-type(even) .tab{left:auto; right:26px}
+
+.rule{border:none; border-top:2px solid var(--ink); margin:14px 0 18px; position:relative}
+.rule.red{border-top-color:var(--red)}
+
+.letterhead{font-family:"Special Elite",monospace; letter-spacing:.16em; font-size:13.5px; color:var(--ink-dim); text-transform:uppercase}
+.letterhead b{color:var(--ink)}
+
+h1{
+  font-family:"Allerta Stencil",sans-serif; font-weight:400;
+  font-size:clamp(42px,9.2vw,86px); line-height:.98; letter-spacing:.01em;
+  margin:18px 0 6px; color:var(--ink);
+}
+h1 .n{color:var(--red)}
+.tagline{font-family:"Special Elite",monospace; font-size:15.5px; color:var(--ink); margin:10px 0 0}
+.tagline em{font-style:normal; background:var(--red); color:var(--paper); padding:0 5px}
+
+h2{font-family:"Special Elite",monospace; font-size:17px; letter-spacing:.2em; text-transform:uppercase; margin:0 0 4px}
+h2 .no{color:var(--red)}
+
+p{margin:0 0 14px}
+.typed{max-width:56ch}
+.redact{background:var(--chrome-edge); color:var(--chrome-edge); border-radius:0; padding:0 4px; user-select:none}
+.note{font-size:14px; color:var(--ink-dim); font-style:italic}
+
+/* hero layout: order text + taped exhibit */
+.orderline{display:grid; grid-template-columns:1.05fr .95fr; gap:36px; align-items:start; margin-top:26px}
+@media (max-width:700px){.orderline{grid-template-columns:1fr}}
+
+.exhibit{position:relative; transform:rotate(1.6deg); margin-top:6px}
+.exhibit img{display:block; width:100%; height:auto; border:2px solid var(--chrome-edge); outline:10px solid var(--photo); outline-offset:-2px;
+  box-shadow:7px 8px 0 rgba(13,13,15,.75)}
+.exhibit figcaption{font-family:"Special Elite",monospace; font-size:12.5px; letter-spacing:.12em; color:var(--ink-dim); margin-top:14px; text-align:center}
+.tape{position:absolute; width:96px; height:26px; background:rgba(214,205,180,.75); border:1px solid rgba(13,13,15,.25); z-index:2}
+.tape.tl{top:-12px; left:-26px; transform:rotate(-38deg)}
+.tape.br{bottom:16px; right:-30px; transform:rotate(-40deg)}
+
+/* rubber stamp */
+.stamp{
+  position:absolute; top:34px; right:38px; z-index:5;
+  border:3px solid var(--red); color:var(--red); padding:7px 14px 5px;
+  font-family:"Special Elite",monospace; font-size:20px; letter-spacing:.24em; text-transform:uppercase;
+  transform:rotate(-8deg); mix-blend-mode:multiply; text-align:center;
+  box-shadow:inset 0 0 0 1px var(--red);
+  animation:stamp .38s cubic-bezier(.2,1.8,.4,1) .55s both;
+}
+.stamp small{display:block; font-size:11px; letter-spacing:.3em; margin-top:2px}
+@keyframes stamp{
+  from{opacity:0; transform:rotate(-16deg) scale(2.4)}
+  70%{opacity:1; transform:rotate(-7deg) scale(.96)}
+  to{opacity:.92; transform:rotate(-8deg) scale(1)}
+}
+@media (max-width:640px){.stamp{position:static; display:inline-block; margin:18px 0 0; animation-delay:.3s}}
+
+/* spec table */
+.spec{margin-top:26px; border-top:2px solid var(--ink)}
+.spec div{display:flex; justify-content:space-between; gap:18px; padding:7px 2px; border-bottom:1px solid var(--shade); font-size:14.5px}
+.spec span:first-child{font-family:"Special Elite",monospace; letter-spacing:.14em; font-size:12.5px; color:var(--ink-dim); padding-top:2px}
+.spec .hot{color:var(--red); font-weight:700}
+
+/* footage */
+.player{position:relative; border:2px solid var(--chrome-edge); background:#000; box-shadow:7px 8px 0 rgba(13,13,15,.75)}
+.player video{display:block; width:100%; aspect-ratio:16/9}
+.cambar{
+  display:flex; align-items:center; gap:10px; background:var(--red); color:var(--paper);
+  font-family:"Special Elite",monospace; font-size:12.5px; letter-spacing:.18em;
+  padding:6px 12px; border-bottom:2px solid var(--chrome-edge); text-transform:uppercase;
+}
+.cambar .rec{width:9px; height:9px; background:var(--paper); border-radius:50%; animation:blink 1.4s steps(1) infinite}
+@keyframes blink{50%{opacity:.15}}
+
+/* evidence gallery */
+.evidence{display:grid; grid-template-columns:1fr 1fr; gap:34px 30px; margin-top:26px}
+@media (max-width:640px){.evidence{grid-template-columns:1fr}}
+.evidence figure{position:relative; margin:0}
+.evidence figure:nth-child(odd){transform:rotate(-.9deg)}
+.evidence figure:nth-child(even){transform:rotate(.8deg)}
+.evidence a{display:block; border:2px solid var(--chrome-edge); outline:8px solid var(--photo); outline-offset:-2px;
+  box-shadow:6px 7px 0 rgba(13,13,15,.7); transition:transform .15s ease, box-shadow .15s ease}
+.evidence a:hover,.evidence a:focus-visible{transform:translate(-2px,-3px); box-shadow:9px 11px 0 rgba(13,13,15,.7)}
+.evidence img{display:block; width:100%; height:auto}
+.evidence .pin{position:absolute; top:-11px; left:50%; width:14px; height:14px; background:var(--red);
+  border:2px solid var(--chrome-edge); border-radius:50%; transform:translateX(-50%); z-index:2}
+.evidence figcaption{font-family:"Special Elite",monospace; font-size:12px; letter-spacing:.14em; color:var(--ink-dim); margin-top:10px; text-align:center; text-transform:uppercase}
+.evidence figure:last-child{grid-column:1/-1; width:min(72%,460px); margin:0 auto}
+
+/* regulations */
+.regs{list-style:none; counter-reset:reg; margin-top:22px; max-width:60ch}
+.regs li{counter-increment:reg; position:relative; padding:10px 0 10px 3.1em; border-bottom:1px solid var(--shade)}
+.regs li::before{
+  content:"§" counter(reg); position:absolute; left:2px; top:10px;
+  font-family:"Special Elite",monospace; color:var(--red);
+  font-size:15px; letter-spacing:.06em;
+}
+.regs b{font-weight:700}
+
+/* notification / footer doc */
+.ctas{display:flex; flex-wrap:wrap; gap:14px; margin-top:20px}
+.btn{
+  font-family:"Special Elite",monospace; font-size:14px; letter-spacing:.16em; text-transform:uppercase;
+  border:2px solid var(--chrome-edge); padding:11px 20px; text-decoration:none; color:var(--paper);
+  background:var(--red); box-shadow:4px 5px 0 rgba(13,13,15,.8);
+}
+.btn:hover,.btn:focus-visible{transform:translate(-1px,-2px); box-shadow:6px 8px 0 rgba(13,13,15,.8); outline:none}
+.btn.ghost{background:transparent; color:var(--ink); box-shadow:4px 5px 0 rgba(13,13,15,.35)}
+.btn.ghost:hover{background:var(--ink); color:var(--paper)}
+
+.colophon{
+  max-width:820px; margin:10px auto 0; text-align:center;
+  color:#8a8478; font-family:"Special Elite",monospace; font-size:12.5px; letter-spacing:.16em;
+}
+.colophon a{color:#ddd6c2; text-decoration:none; border-bottom:2px solid var(--red)}
+.colophon a:hover{background:var(--red); color:#fff}
+.colophon .quote{display:block; margin-top:14px; font-style:italic; letter-spacing:.06em; color:#6f6a5f}
+
+/* entrance: papers slide onto the desk */
+@media (prefers-reduced-motion: no-preference){
+  .doc{animation:file-in .5s ease-out both}
+  .doc:nth-of-type(1){animation-delay:.05s}
+  .doc:nth-of-type(2){animation-delay:.14s}
+  .doc:nth-of-type(3){animation-delay:.22s}
+  .doc:nth-of-type(4){animation-delay:.30s}
+  .doc:nth-of-type(5){animation-delay:.38s}
+  @keyframes file-in{from{opacity:0; translate:0 26px} to{opacity:1; translate:0 0}}
+}
+@media (prefers-reduced-motion: reduce){
+  .stamp{animation:none} .cambar .rec{animation:none}
+}
+::selection{background:var(--red); color:var(--paper)}
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <a href="https://gand.games/">← GAND GAMES</a>
+  <span class="fileno">FILE № I-17 · EYES OPEN · DO NOT DUPLICATE</span>
+</header>
+
+<main>
+<!-- FILE 01 — POSTING ORDER -->
+<section class="doc" aria-labelledby="t">
+  <span class="tab">FILE 01 · POSTING ORDER</span>
+  <div class="stamp" aria-label="Coming soon">Coming<br>Soon<small>PC · 2026</small></div>
+  <p class="letterhead"><b>Ministry of Movement</b> — Sunward People's Republic of Soryang<br>Directorate of Crossings · Posting Order № 17</p>
+  <hr class="rule red">
+  <h1 id="t">INTERSECTION <span class="n">17</span></h1>
+  <p class="tagline">The crossing must move. The family must eat. <em>The Committee is watching.</em></p>
+
+  <div class="orderline">
+    <div>
+      <p class="typed">You are <b>Sena Ri</b>, marshal of the seventeenth crossing. Each morning you take the podium; each evening you take the queue. Direct each car where it signals. Salute the gold pennants without fail. Pull the defective aside and fine them — or don't, and pocket the difference.</p>
+      <p class="typed">Rice, coal, antibiotics: the shops close at curfew, and the alley never does. Letters arrive without postmarks. The radio is precise about everything except <span class="redact">the diverted grain</span>. Thirty days. Several endings. One record, permanent.</p>
+      <p class="note">A traffic-post bureaucracy simulation in a hand-built 3D diorama, filed in the pixel grain of a state document.</p>
+      <div class="spec">
+        <div><span>GENRE</span><span>TRAFFIC-POST BUREAUCRACY SIM</span></div>
+        <div><span>ENGINE</span><span>GODOT 4</span></div>
+        <div><span>PLATFORM</span><span>WINDOWS · LINUX</span></div>
+        <div><span>STATUS</span><span class="hot">IN DEVELOPMENT — COMING SOON</span></div>
+        <div><span>ISSUED BY</span><span>GAND GAMES</span></div>
+      </div>
+    </div>
+    <figure class="exhibit">
+      <span class="tape tl" aria-hidden="true"></span>
+      <span class="tape br" aria-hidden="true"></span>
+      <img src="public/keyart.jpg" width="760" height="1133" alt="Recruitment-poster key art: a female marshal in a navy greatcoat salutes from an octagonal podium marked 17, khaki apartment blocks hung with plain red banners behind her.">
+      <figcaption>EXHIBIT A — RECRUITMENT POSTER, DISTRICT PRINTING HOUSE</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- FILE 02 — SURVEILLANCE -->
+<section class="doc" aria-labelledby="t2">
+  <span class="tab">FILE 02 · SURVEILLANCE</span>
+  <h2 id="t2"><span class="no">02 —</span> Footage, Camera 01</h2>
+  <hr class="rule">
+  <div class="player">
+    <div class="cambar"><span class="rec" aria-hidden="true"></span> CAM 01 · DAY 05 · DOWNTOWN · SUNNY · QUOTA 11</div>
+    <video src="public/gameplay_loop.mp4" poster="public/poster.jpg" autoplay muted loop playsinline
+           aria-label="Silent gameplay loop: vehicles queue and cross the intersection under the marshal's direction."></video>
+  </div>
+  <p class="note" style="margin-top:14px">Recorded by the Directorate for training purposes. The marshal was not informed.</p>
+</section>
+
+<!-- FILE 03 — EVIDENCE -->
+<section class="doc" aria-labelledby="t3">
+  <span class="tab">FILE 03 · FIELD EVIDENCE</span>
+  <h2 id="t3"><span class="no">03 —</span> Photographic record</h2>
+  <hr class="rule">
+  <div class="evidence">
+    <figure><span class="pin" aria-hidden="true"></span><a href="public/shots/day5.jpg"><img src="public/shots/day5.jpg" width="1280" height="720" loading="lazy" alt="Downtown intersection on a sunny day: queues wait at four crosswalks around the marshal's podium."></a><figcaption>Day 05 — Downtown post</figcaption></figure>
+    <figure><span class="pin" aria-hidden="true"></span><a href="public/shots/day6.jpg"><img src="public/shots/day6.jpg" width="1280" height="720" loading="lazy" alt="The same crossing in rain: streetlamps lit, puddles on the asphalt."></a><figcaption>Day 06 — Rain duty</figcaption></figure>
+    <figure><span class="pin" aria-hidden="true"></span><a href="public/shots/day15.jpg"><img src="public/shots/day15.jpg" width="1280" height="720" loading="lazy" alt="Riverside venue: a bridge crosses a teal river beside the intersection."></a><figcaption>Day 15 — Riverside crossing</figcaption></figure>
+    <figure><span class="pin" aria-hidden="true"></span><a href="public/shots/day27.jpg"><img src="public/shots/day27.jpg" width="1280" height="720" loading="lazy" alt="Market day in snow: striped stall awnings crowd all four pavements."></a><figcaption>Day 27 — Market square, snow</figcaption></figure>
+    <figure><span class="pin" aria-hidden="true"></span><a href="public/shots/day30.jpg"><img src="public/shots/day30.jpg" width="1280" height="720" loading="lazy" alt="Stadium day: an arena wall with gates curves behind the crossing, floodlight towers overhead."></a><figcaption>Day 30 — Stadium detail</figcaption></figure>
+    <figure><span class="pin" aria-hidden="true"></span><a href="public/shots/apartment.jpg"><img src="public/shots/apartment.jpg" width="1280" height="720" loading="lazy" alt="Cutaway apartment interior at night: the family gathers between the stove, the radio and the futons."></a><figcaption>21:40 — The apartment</figcaption></figure>
+    <figure><span class="pin" aria-hidden="true"></span><a href="public/shots/alley.jpg"><img src="public/shots/alley.jpg" width="1280" height="720" loading="lazy" alt="A dark back alley market lit by one amber lamp, laundry strung overhead."></a><figcaption>Undocumented — The alley</figcaption></figure>
+  </div>
+</section>
+
+<!-- FILE 04 — REGULATIONS -->
+<section class="doc" aria-labelledby="t4">
+  <span class="tab">FILE 04 · REGULATIONS</span>
+  <h2 id="t4"><span class="no">04 —</span> Duties of the marshal</h2>
+  <hr class="rule">
+  <ol class="regs">
+    <li><b>Keep the crossing moving.</b>&nbsp;Quota is quota.</li>
+    <li>Direct each car where it signals — left for left, right for right, <b>straight when dark</b>.</li>
+    <li>Salute Party pennants as they pass. Failure is noted. <b>Notes are kept.</b></li>
+    <li>Pull defective vehicles aside and fine them. Or wave them through — <b>and pocket the difference.</b></li>
+    <li>After the shift, the second shift: <b>rice, coal, medicine.</b> Public queues close at curfew. The alley never does.</li>
+    <li>The radio speaks at 18:00 precisely. It is precise about everything else, too.</li>
+    <li>Letters without postmarks are not to be read. <b>Read them.</b></li>
+    <li><b>Thirty days.</b> Several endings. One record, permanent.</li>
+  </ol>
+</section>
+
+<!-- FILE 05 — NOTIFICATION -->
+<section class="doc" aria-labelledby="t5">
+  <span class="tab">FILE 05 · REQUEST FORM</span>
+  <h2 id="t5"><span class="no">05 —</span> Notification of release</h2>
+  <hr class="rule">
+  <p class="typed">No storefront has yet been assigned to this posting. To be notified when the crossing opens, file a request with the issuing office, or consult the bureau's public board.</p>
+  <div class="ctas">
+    <a class="btn" href="mailto:contact@gand.tr?subject=Intersection%2017%20—%20notify%20me">File a request ✉</a>
+    <a class="btn ghost" href="https://gand.games/">The bureau · gand.games ↗</a>
+  </div>
+  <p class="note" style="margin-top:18px">Issued by Gand Games. No ads. No tracking. The price, when assigned, is the price.</p>
+</section>
+</main>
+
+<footer class="colophon">
+  <p>© 2026 <a href="https://gand.games/">GAND GAMES</a> · SORYANG IS FICTIONAL · YOUR RECORD IS NOT
+  <span class="quote">"An intersection is a promise kept four ways."</span></p>
+</footer>
+
+<script>
+// Respect reduced motion: no autoplaying surveillance.
+if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
+  const v = document.querySelector("video");
+  v.removeAttribute("autoplay"); v.pause(); v.setAttribute("controls", "");
+}
+</script>
+</body>
+</html>
