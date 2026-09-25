@@ -14,9 +14,29 @@
 <meta property="og:image" content="https://intersection17.gand.games/public/og.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Isometric low-poly view of Intersection 17: columns of khaki vans queue at a four-way crossing around the marshal's podium, tan apartment blocks hung with red banners on each corner.">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://intersection17.gand.games/public/og.jpg">
+<meta name="twitter:image:alt" content="Isometric low-poly view of Intersection 17: columns of khaki vans queue at a four-way crossing around the marshal's podium, tan apartment blocks hung with red banners on each corner.">
 <link rel="icon" href="public/favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="public/apple-touch-icon.png">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Intersection 17",
+  "url": "https://intersection17.gand.games/",
+  "description": "A traffic-post bureaucracy simulation in a low-poly 3D diorama. As marshal Sena Ri, direct the traffic, salute the pennants, feed the family and mind the curfew. Thirty days. One permanent record.",
+  "image": "https://intersection17.gand.games/public/og.jpg",
+  "genre": ["Simulation", "Bureaucracy sim"],
+  "gamePlatform": "PC",
+  "operatingSystem": ["Windows", "Linux"],
+  "applicationCategory": "Game",
+  "inLanguage": "en",
+  "publisher": { "@type": "Organization", "name": "Gand Games", "url": "https://gand.games/" },
+  "author": { "@type": "Organization", "name": "Gand", "url": "https://gand.tr/" }
+}
+</script>
 <style>
 /* ── Sunward People's Republic of Soryang · document stock ─────────── */
 @font-face{font-family:"Allerta Stencil";src:url(public/fonts/stencil.woff2) format("woff2");font-display:swap}
@@ -260,7 +280,7 @@ p{margin:0 0 14px}
   <hr class="rule">
   <div class="player">
     <div class="cambar"><span class="rec" aria-hidden="true"></span> CAM 01 · DAY 05 · DOWNTOWN · SUNNY · QUOTA 11</div>
-    <video src="public/gameplay_loop.mp4" poster="public/poster.jpg" autoplay muted loop playsinline
+    <video src="public/gameplay_loop.mp4" poster="public/poster.jpg" preload="none" muted loop playsinline
            aria-label="Silent gameplay loop: vehicles queue and cross the intersection under the marshal's direction."></video>
   </div>
   <p class="note" style="margin-top:14px">Recorded by the Directorate for training purposes. The marshal was not informed.</p>
@@ -319,11 +339,18 @@ p{margin:0 0 14px}
 </footer>
 
 <script>
-// Respect reduced motion: no autoplaying surveillance.
-if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
-  const v = document.querySelector("video");
-  v.removeAttribute("autoplay"); v.pause(); v.setAttribute("controls", "");
-}
+// The footage loads only when it scrolls into view, and pauses when it leaves.
+// Reduced motion or Save-Data: no autoplaying surveillance, controls instead.
+(function () {
+  const v = document.querySelector(".player video");
+  const still = matchMedia("(prefers-reduced-motion: reduce)").matches ||
+    (navigator.connection && navigator.connection.saveData);
+  if (still || !("IntersectionObserver" in window)) { v.setAttribute("controls", ""); return; }
+  new IntersectionObserver(function (entries) {
+    if (entries[0].isIntersecting) v.play().catch(function () { v.setAttribute("controls", ""); });
+    else v.pause();
+  }, { threshold: 0.25 }).observe(v);
+})();
 </script>
 </body>
 </html>
