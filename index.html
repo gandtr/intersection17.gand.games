@@ -118,7 +118,8 @@ body::after{
 
 h1{
   font-family:"Allerta Stencil",sans-serif; font-weight:400;
-  font-size:clamp(42px,9.2vw,86px); line-height:.98; letter-spacing:.01em;
+  font-size:clamp(28px,9.2vw,86px); line-height:.98; letter-spacing:.01em;
+  overflow-wrap:anywhere;
   margin:18px 0 6px; color:var(--ink);
 }
 h1 .n{color:var(--red)}
@@ -285,7 +286,7 @@ p{margin:0 0 14px}
   <hr class="rule">
   <div class="player">
     <div class="cambar"><span class="rec" aria-hidden="true"></span> CAM 01 · DAY 05 · DOWNTOWN · SUNNY · QUOTA 11</div>
-    <video src="public/gameplay_loop.mp4" poster="public/poster.jpg" preload="none" muted loop playsinline
+    <video src="public/gameplay_loop.mp4" poster="public/poster.jpg" preload="none" muted loop playsinline controls
            aria-label="Silent gameplay loop: vehicles queue and cross the intersection under the marshal's direction."></video>
   </div>
   <p class="note" style="margin-top:14px">Recorded by the Directorate for training purposes. The marshal was not informed.</p>
